@@ -1,0 +1,1055 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #1a1a1a;
+    --secondary-color: #2d2d2d;
+    --bg-color: #f5f5f0;
+    --card-bg: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --border-color: #d4d4d4;
+    --hover-color: #f0f0eb;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --paper-texture: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    --grain-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.15'/%3E%3C/svg%3E");
+}
+
+html,
+body {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-color);
+    background-image: var(--paper-texture), var(--grain-texture);
+    background-size: 200px 200px, 400px 400px;
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 20px;
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-image: repeating-linear-gradient( 0deg, rgba(0, 0, 0, 0.02) 0px, transparent 1px, transparent 2px, rgba(0, 0, 0, 0.02) 3px), repeating-linear-gradient( 90deg, rgba(0, 0, 0, 0.02) 0px, transparent 1px, transparent 2px, rgba(0, 0, 0, 0.02) 3px);
+    background-size: 4px 4px;
+    z-index: 1;
+    opacity: 0.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 16px;
+    position: relative;
+    z-index: 2;
+}
+
+
+/* iPad Mini 2 specific (2048x1536 @ 326ppi = 1024x768 logical pixels in landscape) */
+    
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    html,
+    body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+        width: 100% !important;
+    }
+    body {
+        padding: 12px;
+        overflow-x: hidden;
+    }
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 8px;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+    .profile-card {
+        padding: 20px;
+        gap: 20px;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .profile-avatar {
+        flex-shrink: 0;
+    }
+    .profile-avatar img {
+        width: 120px;
+        height: 120px;
+    }
+    .profile-name {
+        font-size: 22px;
+    }
+    .profile-username {
+        font-size: 14px;
+    }
+    .profile-bio {
+        font-size: 14px;
+    }
+    .profile-stats {
+        gap: 16px;
+        padding: 16px 0;
+    }
+    .stat-value {
+        font-size: 18px;
+    }
+    .stat-label {
+        font-size: 12px;
+    }
+    .commit-stats {
+        gap: 12px;
+        padding: 12px;
+        flex-wrap: wrap;
+    }
+    .commit-stat-item {
+        min-width: 90px;
+        flex: 1 1 auto;
+    }
+    .commit-stat-value {
+        font-size: 18px;
+    }
+    .contribution-container {
+        padding: 16px;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    .contribution-calendar-wrapper {
+        padding: 8px 0;
+        max-width: 100%;
+        overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .contribution-calendar-wrapper svg {
+        max-width: 100% !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 120px;
+        box-sizing: border-box;
+    }
+    .readme-container {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    .readme-content {
+        padding: 20px;
+        font-size: 13px;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+    .markdown-body {
+        font-size: 13px;
+        max-width: 100%;
+    }
+    .markdown-body h1 {
+        font-size: 22px;
+        margin: 16px 0 12px;
+    }
+    .markdown-body h2 {
+        font-size: 18px;
+        margin: 16px 0 12px;
+    }
+    .markdown-body h3 {
+        font-size: 16px;
+        margin: 14px 0 10px;
+    }
+    .markdown-body p {
+        margin: 12px 0;
+    }
+    .markdown-body pre {
+        padding: 12px;
+        font-size: 12px;
+        overflow-x: auto;
+        max-width: 100%;
+    }
+    .markdown-body img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+    .section {
+        margin-bottom: 24px;
+    }
+    .section-title {
+        font-size: 20px;
+    }
+}
+
+
+/* Header & Profile Card */
+
+.header {
+    margin-bottom: 40px;
+}
+
+.profile-card {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 40px;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    box-shadow: none;
+    align-items: flex-start;
+}
+
+.profile-avatar-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    flex-shrink: 0;
+}
+
+.profile-avatar img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    object-fit: cover;
+    filter: grayscale(20%) contrast(1.1);
+}
+
+.profile-name-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+}
+
+.profile-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.profile-username {
+    font-size: 16px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.profile-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 16px;
+}
+
+.profile-bio {
+    font-size: 16px;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 24px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.commit-stats {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.commit-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 120px;
+}
+
+.commit-stat-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.commit-stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.commit-stat-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.commit-stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profile-links {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    border: 1px solid;
+}
+
+.btn-primary {
+    background: var(--text-primary);
+    color: var(--bg-color);
+    border-color: var(--text-primary);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.profile-meta {
+    margin-top: 16px;
+}
+
+.meta-item {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+
+/* Sections */
+
+.section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+
+/* Contribution Graph */
+
+.contribution-container {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    overflow: hidden;
+    flex: 1;
+    box-sizing: border-box;
+    min-width: 0;
+}
+
+.contribution-calendar-wrapper {
+    width: 100%;
+    overflow: hidden;
+    padding: 10px 0;
+    display: block;
+    box-sizing: border-box;
+}
+
+.contribution-calendar-wrapper svg {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 128px;
+    border-radius: 4px;
+    background: var(--bg-color);
+    display: block;
+    margin: 0 auto;
+    padding: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+}
+
+
+/* Ensure SVG doesn't cause horizontal scroll */
+
+.contribution-calendar-wrapper svg[viewBox] {
+    max-width: 100%;
+    width: 100%;
+}
+
+
+/* Handle SVG without viewBox */
+
+.contribution-calendar-wrapper svg:not([viewBox]) {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+}
+
+
+/* Paper ink theme adjustments for contribution calendar */
+
+.contribution-calendar-wrapper svg text {
+    fill: var(--text-primary) !important;
+}
+
+
+/* Weather Section */
+
+.weather-section {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.weather-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.weather-top {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 30px;
+    align-items: start;
+    padding-bottom: 20px;
+    border-bottom: 1px dotted var(--border-color);
+    margin-bottom: 20px;
+}
+
+.weather-icon-large {
+    font-size: 64px;
+    line-height: 1;
+}
+
+.weather-main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.weather-temp {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.weather-time {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.weather-current {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.weather-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.weather-item-icon {
+    font-size: 18px;
+}
+
+.weather-item-text {
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.weather-bottom {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.weather-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.weather-forecast-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-primary);
+}
+
+.weather-forecast-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.weather-forecast-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.weather-error {
+    padding: 20px;
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.weather-error ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.weather-error li {
+    margin: 5px 0;
+    color: var(--text-secondary);
+}
+
+
+/* Responsive Weather */
+
+@media (max-width: 768px) {
+    .weather-top {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        text-align: center;
+    }
+    .weather-main {
+        align-items: center;
+    }
+    .weather-current {
+        align-items: center;
+        text-align: center;
+    }
+    .weather-bottom {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .weather-container {
+        padding: 20px;
+    }
+}
+
+.contribution-iframe-wrapper {
+    width: 100%;
+    min-height: 300px;
+    overflow: hidden;
+    border-radius: 4px;
+    position: relative;
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.contribution-iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 4px;
+    display: block;
+}
+
+.contribution-fallback-link {
+    text-align: center;
+    margin-top: 16px;
+}
+
+.contribution-graph {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    background: transparent;
+}
+
+.contribution-error {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+}
+
+
+/* Repositories Grid */
+
+.repositories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.repo-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 24px;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.repo-card:hover {
+    border-color: var(--text-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.repo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.repo-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.repo-name a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-weight: 600;
+}
+
+.repo-name a:hover {
+    color: var(--text-secondary);
+    text-decoration: underline;
+}
+
+.repo-badge {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.repo-badge.private {
+    background: var(--hover-color);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.repo-description {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    flex: 1;
+    margin: 0;
+}
+
+.repo-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.repo-language {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.language-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--secondary-color);
+    display: inline-block;
+}
+
+.repo-stats {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.repo-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.repo-stat svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.repo-updated {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: auto;
+}
+
+
+/* README Section Inline (inside profile card - right side) */
+
+.profile-right-section {
+    border-left: 1px solid var(--border-color);
+    padding-left: 40px;
+}
+
+.readme-header-inline {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.readme-section-inline {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border-color);
+}
+
+
+/* README Section (standalone - kept for backward compatibility) */
+
+.readme-section {
+    margin-bottom: 40px;
+}
+
+.readme-container {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.readme-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.readme-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.readme-title svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--text-secondary);
+}
+
+.readme-content {
+    padding: 32px;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.profile-right-section .readme-content {
+    padding: 0;
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.profile-right-section .readme-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.profile-right-section .readme-content::-webkit-scrollbar-track {
+    background: var(--bg-color);
+    border-radius: 4px;
+}
+
+.profile-right-section .readme-content::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.profile-right-section .readme-content::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+.markdown-body {
+    font-size: 16px;
+}
+
+.markdown-body h1 {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 24px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.markdown-body h1:first-child {
+    margin-top: 0;
+}
+
+.markdown-body h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 24px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.markdown-body h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 20px 0 12px;
+    color: var(--text-primary);
+}
+
+.markdown-body p {
+    margin: 16px 0;
+    color: var(--text-primary);
+}
+
+.markdown-body code {
+    background: var(--hover-color);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 85%;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.markdown-body pre {
+    background: var(--hover-color);
+    padding: 16px;
+    border-radius: 4px;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    margin: 16px 0;
+}
+
+.markdown-body pre code {
+    background: transparent;
+    padding: 0;
+    border: none;
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+    margin: 16px 0;
+    padding-left: 24px;
+    color: var(--text-primary);
+}
+
+.markdown-body li {
+    margin: 8px 0;
+    color: var(--text-primary);
+}
+
+.markdown-body a {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--text-secondary);
+    text-underline-offset: 2px;
+}
+
+.markdown-body a:hover {
+    text-decoration: underline;
+}
+
+.markdown-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 16px 0;
+}
+
+.markdown-body strong {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.markdown-body em {
+    font-style: italic;
+    color: var(--text-primary);
+}
+
+.markdown-body blockquote {
+    border-left: 2px solid var(--border-color);
+    padding-left: 16px;
+    margin: 16px 0;
+    color: var(--text-secondary);
+    font-style: italic;
+    background: var(--hover-color);
+    padding: 12px 16px;
+    border-radius: 2px;
+}
+
+
+/* Footer */
+
+.footer {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    border-top: 1px solid var(--border-color);
+    margin-top: 40px;
+}
+
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+    .profile-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 30px 20px;
+        gap: 30px;
+    }
+    .profile-avatar-section {
+        width: 100%;
+    }
+    .profile-stats {
+        justify-content: center;
+    }
+    .profile-links {
+        justify-content: center;
+    }
+    .repositories-grid {
+        grid-template-columns: 1fr;
+    }
+    .contribution-container {
+        padding: 0;
+        overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .contribution-calendar-wrapper {
+        width: 100%;
+        overflow: hidden;
+        box-sizing: border-box;
+    }
+    .contribution-calendar-wrapper svg {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    .profile-name {
+        font-size: 24px;
+    }
+    .profile-username {
+        font-size: 16px;
+    }
+    .profile-stats {
+        gap: 20px;
+    }
+    .stat-value {
+        font-size: 20px;
+    }
+}

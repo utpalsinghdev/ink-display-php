@@ -1,0 +1,20 @@
+# Cache directory
+cache/
+
+# Configuration (if you want to keep your token private)
+# config.php
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
