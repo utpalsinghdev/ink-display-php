@@ -6,6 +6,9 @@
  * For authenticated requests (higher rate limits), you can optionally set a GitHub Personal Access Token.
  */
 
+// Application Version
+define('APP_VERSION', '1.0.0');
+
 // Your GitHub username
 define('GITHUB_USERNAME', 'utpalsinghdev');
 
