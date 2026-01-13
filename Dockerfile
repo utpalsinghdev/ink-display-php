@@ -12,6 +12,6 @@ RUN mkdir -p cache && chmod 755 cache
 # Expose port 8000 (same as local)
 EXPOSE 8000
 
-# Start PHP built-in server (same as local: php -S localhost:8000)
-CMD ["php", "-S", "0.0.0.0:8000"]
+# Start PHP built-in server with index.php as router (same as local: php -S localhost:8000)
+CMD ["php", "-S", "0.0.0.0:8000", "-t", ".", "index.php"]
 
