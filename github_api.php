@@ -15,6 +15,9 @@ function github_api_request($endpoint) {
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_USERAGENT, 'GitHub Profile Display');
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         'Accept: application/vnd.github.v3+json'
     ]);
@@ -29,9 +32,16 @@ function github_api_request($endpoint) {
     
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curl_error = curl_error($ch);
     curl_close($ch);
     
     if ($http_code !== 200) {
+        error_log("GitHub API Error: HTTP $http_code for $endpoint" . ($curl_error ? " - $curl_error" : ""));
+        return null;
+    }
+    
+    if ($curl_error) {
+        error_log("GitHub API CURL Error: $curl_error");
         return null;
     }
     

@@ -13,7 +13,7 @@ WORKDIR /app
 COPY . /app
 
 # Set permissions for cache directory
-RUN mkdir -p cache && chmod 755 cache
+RUN mkdir -p cache && chmod 777 cache
 
 # Expose port 8000 (same as local)
 EXPOSE 8000
