@@ -1,23 +1,14 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
 # Install required PHP extensions
 RUN docker-php-ext-install -j$(nproc) curl
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
-
-# Set working directory
-WORKDIR /var/www/html
-
-# Copy application files
-COPY . /var/www/html/
-
 # Set permissions for cache directory
 RUN mkdir -p cache && chmod 755 cache
 
-# Expose port 80
-EXPOSE 80
+# Expose port 8000 (same as local)
+EXPOSE 8000
 
-# Start Apache
-CMD ["apache2-foreground"]
+# Start PHP built-in server (same as local: php -S localhost:8000)
+CMD ["php", "-S", "0.0.0.0:8000"]
 
