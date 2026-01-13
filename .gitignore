@@ -1,6 +1,9 @@
 # Cache directory
 cache/
 
+# Environment variables
+.env
+
 # Configuration (if you want to keep your token private)
 # config.php
 
