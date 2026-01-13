@@ -20,13 +20,19 @@ $readme_content = get_profile_readme($username);
 // Fetch weather data
 $weather = null;
 $forecast = null;
+$air_quality = null;
 if (!empty(OPENWEATHER_API_KEY) && OPENWEATHER_API_KEY !== 'your-openweather-api-key-here') {
     if (WEATHER_LAT && WEATHER_LON) {
         $weather = get_weather_data(null, WEATHER_LAT, WEATHER_LON);
         $forecast = get_weather_forecast(null, WEATHER_LAT, WEATHER_LON);
+        $air_quality = get_air_quality(WEATHER_LAT, WEATHER_LON);
     } elseif (WEATHER_CITY) {
         $weather = get_weather_data(WEATHER_CITY);
         $forecast = get_weather_forecast(WEATHER_CITY);
+        // Try to get coordinates from weather data for AQI
+        if ($weather && isset($weather['coord'])) {
+            $air_quality = get_air_quality($weather['coord']['lat'], $weather['coord']['lon']);
+        }
     }
 }
 
@@ -124,32 +130,42 @@ if (!$profile) {
                 <!-- Top Section: Current Weather -->
                 <div class="weather-top">
                     <div class="weather-icon-large">
-                        <?php 
-                        $icon_code = $weather['weather'][0]['icon'] ?? '01d';
-                        echo get_weather_icon($icon_code);
-                        ?>
+                        <?php echo get_thermometer_icon(64); ?>
                     </div>
                     <div class="weather-main">
+                        <?php 
+                        $icon_code = $weather['weather'][0]['icon'] ?? '01d';
+                        ?>
                         <div class="weather-temp">
                             <?php echo round($weather['main']['temp']); ?>°
                         </div>
                         <div class="weather-time">
-                            Temperature (<?php echo date('g:i A'); ?>)
+                            Temperature (<?php 
+                            $timezone = new DateTimeZone('Asia/Kolkata');
+                            $datetime = new DateTime('now', $timezone);
+                            echo $datetime->format('g:i A'); 
+                            ?>)
                         </div>
                     </div>
                     <div class="weather-current">
                         <div class="weather-item">
-                            <span class="weather-item-icon">🌡️</span>
+                            <span class="weather-item-icon"><?php echo get_thermometer_icon(); ?></span>
                             <span class="weather-item-text"><?php echo round($weather['main']['feels_like']); ?>° Feels Like</span>
                         </div>
                         <div class="weather-item">
-                            <span class="weather-item-icon">💧</span>
+                            <span class="weather-item-icon"><?php echo get_droplet_icon(); ?></span>
                             <span class="weather-item-text"><?php echo $weather['main']['humidity']; ?>% Humidity</span>
                         </div>
                         <div class="weather-item">
-                            <span class="weather-item-icon"><?php echo get_weather_icon($icon_code); ?></span>
+                            <span class="weather-item-icon"><?php echo get_thermometer_icon(); ?></span>
                             <span class="weather-item-text"><?php echo ucfirst($weather['weather'][0]['description']); ?> Right Now</span>
                         </div>
+                        <?php if ($air_quality && isset($air_quality['main']['aqi'])): ?>
+                        <div class="weather-item">
+                            <span class="weather-item-icon"><?php echo get_air_quality_icon(); ?></span>
+                            <span class="weather-item-text">AQI: <?php echo get_aqi_description($air_quality['main']['aqi']); ?> (<?php echo $air_quality['main']['aqi']; ?>)</span>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -157,7 +173,7 @@ if (!$profile) {
                 <div class="weather-bottom">
                     <div class="weather-column">
                         <div class="weather-forecast-item">
-                            <span class="weather-forecast-icon"><?php echo get_weather_icon($icon_code); ?></span>
+                            <span class="weather-forecast-icon"><?php echo get_weather_icon($icon_code, 20); ?></span>
                             <span class="weather-forecast-text"><?php echo ucfirst($weather['weather'][0]['description']); ?> Today</span>
                         </div>
                         <?php if ($forecast && isset($forecast['list'][0])): 
@@ -165,7 +181,7 @@ if (!$profile) {
                             $tomorrow_desc = $forecast['list'][0]['weather'][0]['description'] ?? 'Clear';
                         ?>
                         <div class="weather-forecast-item">
-                            <span class="weather-forecast-icon"><?php echo get_weather_icon($tomorrow_icon); ?></span>
+                            <span class="weather-forecast-icon"><?php echo get_weather_icon($tomorrow_icon, 20); ?></span>
                             <span class="weather-forecast-text"><?php echo ucfirst($tomorrow_desc); ?> Tomorrow</span>
                         </div>
                         <?php endif; ?>
@@ -176,23 +192,23 @@ if (!$profile) {
                         $uv_tomorrow = $forecast && isset($forecast['list'][0]) ? calculate_uv_index(['weather' => [$forecast['list'][0]['weather'][0]]]) : $uv_today * 0.9;
                         ?>
                         <div class="weather-forecast-item">
-                            <span class="weather-forecast-icon">☀️</span>
+                            <span class="weather-forecast-icon"><?php echo get_sun_icon(); ?></span>
                             <span class="weather-forecast-text"><?php echo get_uv_description($uv_today); ?> (<?php echo $uv_today; ?>) UV</span>
                         </div>
                         <div class="weather-forecast-item">
-                            <span class="weather-forecast-icon">☀️</span>
+                            <span class="weather-forecast-icon"><?php echo get_sun_icon(); ?></span>
                             <span class="weather-forecast-text"><?php echo get_uv_description($uv_tomorrow); ?> (<?php echo $uv_tomorrow; ?>) UV</span>
                         </div>
                     </div>
                     <div class="weather-column">
                         <div class="weather-forecast-item">
-                            <span class="weather-forecast-icon">🌡️</span>
+                            <span class="weather-forecast-icon"><?php echo get_thermometer_icon(20); ?></span>
                             <span class="weather-forecast-text"><?php echo round($weather['main']['temp_min']); ?>° Low</span>
                             <span class="weather-forecast-text"><?php echo round($weather['main']['temp_max']); ?>° High</span>
                         </div>
                         <?php if ($forecast && isset($forecast['list'][0])): ?>
                         <div class="weather-forecast-item">
-                            <span class="weather-forecast-icon">🌡️</span>
+                            <span class="weather-forecast-icon"><?php echo get_thermometer_icon(20); ?></span>
                             <span class="weather-forecast-text"><?php echo round($forecast['list'][0]['main']['temp_min']); ?>° Low</span>
                             <span class="weather-forecast-text"><?php echo round($forecast['list'][0]['main']['temp_max']); ?>° High</span>
                         </div>

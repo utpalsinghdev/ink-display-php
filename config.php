@@ -20,8 +20,8 @@ define('GITHUB_API_URL', 'https://api.github.com');
 // Cache duration in seconds (to reduce API calls)
 define('CACHE_DURATION', 300); // 5 minutes
 
-// Timezone
-date_default_timezone_set('UTC');
+// Timezone (UTC+5:30 - Indian Standard Time)
+date_default_timezone_set('Asia/Kolkata');
 
 // OpenWeather API Configuration
 // Get your free API key at: https://openweathermap.org/api

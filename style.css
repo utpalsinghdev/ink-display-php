@@ -66,7 +66,7 @@ body::before {
 
 
 /* iPad Mini 2 specific (2048x1536 @ 326ppi = 1024x768 logical pixels in landscape) */
-    
+
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     html,
     body {
@@ -466,14 +466,16 @@ body::before {
 .weather-section {
     margin-top: 40px;
     margin-bottom: 40px;
+    padding-top: 40px;
+    border-top: 1px dotted var(--border-color);
 }
 
 .weather-container {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
     padding: 30px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: none;
 }
 
 .weather-top {
