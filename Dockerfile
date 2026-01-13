@@ -1,7 +1,10 @@
 FROM php:8.2-cli
 
-# Install required PHP extensions
-RUN docker-php-ext-install -j$(nproc) curl
+# Install system dependencies and PHP extensions
+RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev \
+    && docker-php-ext-install -j$(nproc) curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Set permissions for cache directory
 RUN mkdir -p cache && chmod 755 cache
