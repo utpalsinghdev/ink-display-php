@@ -36,7 +36,17 @@ function github_api_request($endpoint) {
     curl_close($ch);
     
     if ($http_code !== 200) {
-        error_log("GitHub API Error: HTTP $http_code for $endpoint" . ($curl_error ? " - $curl_error" : ""));
+        $error_data = json_decode($response, true);
+        $error_msg = "GitHub API Error: HTTP $http_code for $endpoint";
+        if ($http_code === 403) {
+            $error_msg .= " - Rate limit exceeded. Add a GitHub Personal Access Token in config.php to increase limits from 60 to 5,000 requests/hour.";
+        } elseif ($error_data && isset($error_data['message'])) {
+            $error_msg .= " - " . $error_data['message'];
+        }
+        if ($curl_error) {
+            $error_msg .= " - CURL: $curl_error";
+        }
+        error_log($error_msg);
         return null;
     }
     
